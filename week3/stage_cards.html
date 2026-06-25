@@ -129,3 +129,50 @@
         }
 
         function setStatus(stage, status) {
+            stages[stage] = status
+            var el = document.getElementById("status-" + stage)
+            el.textContent = status
+            el.className = "status " + status
+        }
+
+        function log(message) {
+            document.getElementById("log").textContent = message
+        }
+
+        function runPipeline() {
+            // run each stage one after another with a small delay
+            // so you can see the state changing
+
+            setStatus("input", "running")
+            log("input stage started")
+
+            setTimeout(function() {
+                setStatus("input", "done")
+                setStatus("detection", "running")
+                log("detection stage started")
+
+                setTimeout(function() {
+                    setStatus("detection", "done")
+                    setStatus("output", "running")
+                    log("output stage started")
+
+                    setTimeout(function() {
+                        setStatus("output", "done")
+                        log("pipeline finished")
+                    }, 800)
+
+                }, 1000)
+
+            }, 1000)
+        }
+
+        function resetPipeline() {
+            setStatus("input", "waiting")
+            setStatus("detection", "waiting")
+            setStatus("output", "waiting")
+            log("reset")
+        }
+    </script>
+
+</body>
+</html>
